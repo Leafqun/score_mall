@@ -18,8 +18,8 @@ public class GoodController {
     @Resource
     private GoodMapper goodMapper;
 
-    @GetMapping("getList")
-    public Object getList() {
+    @GetMapping("getList1")
+    public Object getList1() {
         return goodMapper.selectList(null);
     }
 
