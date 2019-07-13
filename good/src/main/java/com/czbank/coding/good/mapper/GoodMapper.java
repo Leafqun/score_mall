@@ -1,6 +1,6 @@
 package com.czbank.coding.good.mapper;
 
-import api.Good;
+import com.czbank.coding.api.Good;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 
