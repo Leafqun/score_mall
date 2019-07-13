@@ -34,6 +34,7 @@ public class GoodController {
         return map;
     }
 
+    @GetMapping("/getGoodListByType")
     public Map<String, Object> getGoodListByType(@RequestParam Integer currentPage, @RequestParam Integer pageSize, Good good) {
         Map<String, Object> map = new HashMap<>();
         QueryWrapper<Good> qw = new QueryWrapper<>();
