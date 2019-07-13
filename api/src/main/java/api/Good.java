@@ -20,7 +20,7 @@ public class Good implements Serializable,Cloneable{
 
     @TableId(value = "id" , type = IdType.AUTO)
     private Integer id ;
-    /** 物品名 */
+    /** 物品名1 */
     private String goodName ;
     /** 积分价格 */
     private Integer scorePrice ;
