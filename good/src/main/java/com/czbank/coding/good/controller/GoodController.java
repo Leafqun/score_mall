@@ -1,8 +1,8 @@
 package com.czbank.coding.good.controller;
 
-import com.czbank.coding.api.Good;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.czbank.coding.api.Good;
 import com.czbank.coding.good.mapper.GoodMapper;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
@@ -58,14 +58,25 @@ public class GoodController {
         map.put("good", goodMapper.selectById(id));
         return map;
     }
-    @GetMapping("selectLike")
-    public Map<String, Object> selectgoodLike(String name) {
+
+    @GetMapping("getGoodListByName")
+    public Map<String, Object> getGoodListLike(@RequestParam Integer currentPage, @RequestParam Integer pageSize, @RequestParam String name) {
         Map<String, Object> map = new HashMap<>();
         QueryWrapper qw = new QueryWrapper();
-        qw.like("good_name",name);
+        qw.orderByDesc("id");
+        if (!StringUtils.isEmpty(name)) {
+            if (!StringUtils.isEmpty(qw.like("good_name",name))) {
+                Page<Good> page = new Page<>(currentPage, pageSize);
+                map.put("page", goodMapper.selectPage(page, qw));
+            } else {
+                map.put("msg", "查询商品为空");
+            }
+        } else {
+            map.put("msg", "请输入查询信息");
+        }
         return map;
-
-
     }
-
 }
+
+
+

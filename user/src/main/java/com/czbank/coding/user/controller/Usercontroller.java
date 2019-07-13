@@ -68,6 +68,17 @@ public class Usercontroller {
         return map;
     }
 
+    //    Map<String, Object> map = new HashMap<>();
+//    QueryWrapper<Good> qw = new QueryWrapper<>();
+//        qw.orderByDesc("id");
+//        if (!StringUtils.isEmpty(good.getBigClassify())) {
+//        qw.eq("big_classify", good.getBigClassify());
+//    } else if (!StringUtils.isEmpty(good.getSmallClassify())) {
+//        qw.eq("small_classify", good.getSmallClassify());
+//    } else {
+//        map.put("msg", "类型信息为空");
+//        return map;
+//    }
     /**
      * 通过ID查询
      */
@@ -168,6 +179,7 @@ public class Usercontroller {
     /**
      * 登录（伪）
      */
+
     @GetMapping ("login")
     public Map<String,Object> login(String phone, String password) {
         Map<String, Object> map = new HashMap<>();
@@ -175,7 +187,6 @@ public class Usercontroller {
         map.put("fail",null);
         qw.eq("phone",phone);
         User user = userMapper.selectOne(qw);
-        User conten = new User();
         if (user != null && password.equals(user.getPassword())) {
             map.clear();
             map.put("sucess",userMapper.selectMaps(qw.select("id","nickname","avatar")));
