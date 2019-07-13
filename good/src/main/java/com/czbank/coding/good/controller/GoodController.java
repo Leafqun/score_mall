@@ -58,4 +58,14 @@ public class GoodController {
         map.put("good", goodMapper.selectById(id));
         return map;
     }
+    @GetMapping("selectLike")
+    public Map<String, Object> selectgoodLike(String name) {
+        Map<String, Object> map = new HashMap<>();
+        QueryWrapper qw = new QueryWrapper();
+        qw.like("good_name",name);
+        return map;
+
+
+    }
+
 }
