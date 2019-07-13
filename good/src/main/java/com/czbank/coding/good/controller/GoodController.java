@@ -34,12 +34,13 @@ public class GoodController {
         return map;
     }
 
+    @GetMapping("/getGoodListByType")
     public Map<String, Object> getGoodListByType(@RequestParam Integer currentPage, @RequestParam Integer pageSize, Good good) {
         Map<String, Object> map = new HashMap<>();
         QueryWrapper<Good> qw = new QueryWrapper<>();
         qw.orderByDesc("id");
         if (!StringUtils.isEmpty(good.getBigClassify())) {
-            qw.eq("big_classfiy", good.getBigClassify());
+            qw.eq("big_classify", good.getBigClassify());
         } else if (!StringUtils.isEmpty(good.getSmallClassify())) {
             qw.eq("small_classify", good.getSmallClassify());
         } else {
