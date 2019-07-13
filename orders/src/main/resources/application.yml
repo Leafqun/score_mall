@@ -1,0 +1,32 @@
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://119.23.22.99:8888/eureka/
+server:
+  port: 8892
+spring:
+  application:
+    name: orders
+  profiles:
+    active: prod
+  ssh:
+    host: 119.23.22.99
+    user: root
+    pwd: Leafqun@yeah.net
+    port: 22
+    local_port: 3309
+    remote_host: localhost
+    remote_port: 3306
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password:
+    hikari:
+      maxLifetime: 1765000 #一个连接的生命时长（毫秒），超时而且没被使用则被释放（retired），缺省:30分钟，建议设置比数据库超时时长少30秒以上
+      maximumPoolSize: 15
+---
+# 生产环境配置
+spring:
+  profiles: prod
+  datasource:
+    url: jdbc:mysql://localhost:3309/score_mall?characterEncoding=UTF-8&useUnicode=true&useSSL=false
