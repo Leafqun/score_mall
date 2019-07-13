@@ -64,6 +64,7 @@ public class GoodController {
         QueryWrapper qw = new QueryWrapper();
         qw.like("good_name",name);
 
+
     }
 
 }
