@@ -40,7 +40,7 @@ public class GoodController {
         QueryWrapper<Good> qw = new QueryWrapper<>();
         qw.orderByDesc("id");
         if (!StringUtils.isEmpty(good.getBigClassify())) {
-            qw.eq("big_classfiy", good.getBigClassify());
+            qw.eq("big_classify", good.getBigClassify());
         } else if (!StringUtils.isEmpty(good.getSmallClassify())) {
             qw.eq("small_classify", good.getSmallClassify());
         } else {
