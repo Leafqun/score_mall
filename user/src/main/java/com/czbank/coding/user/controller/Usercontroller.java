@@ -24,9 +24,9 @@ public class Usercontroller {
     public Object userInsert() {
     //增加
         User user = new User();
-        user.setId(123);
+//        user.setId(123);
         user.setNickname("w");
-        user.setAddress(" w");
+        user.setAddress("w");
         user.setBankaccount("w");
         user.setMail("w");
         user.setName("w");
