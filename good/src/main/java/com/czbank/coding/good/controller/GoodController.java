@@ -63,6 +63,7 @@ public class GoodController {
         Map<String, Object> map = new HashMap<>();
         QueryWrapper qw = new QueryWrapper();
         qw.like("good_name",name);
+        return map;
 
 
     }
