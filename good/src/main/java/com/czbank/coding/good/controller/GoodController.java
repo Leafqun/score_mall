@@ -42,7 +42,12 @@ public class GoodController {
             qw.eq("big_classfiy", good.getBigClassify());
         } else if (!StringUtils.isEmpty(good.getSmallClassify())) {
             qw.eq("small_classify", good.getSmallClassify());
+        } else {
+            map.put("msg", "类型信息为空");
+            return map;
         }
+        Page<Good> page = new Page<>(currentPage, pageSize);
+        map.put("page", goodMapper.selectPage(page, qw));
         return map;
     }
 
