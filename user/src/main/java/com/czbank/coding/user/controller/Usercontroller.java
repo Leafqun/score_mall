@@ -16,7 +16,6 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("user")
-@Controller
 public class Usercontroller {
     @Resource
     private UserMapper userMapper;
