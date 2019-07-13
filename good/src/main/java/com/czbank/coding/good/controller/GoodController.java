@@ -4,6 +4,7 @@ import api.Good;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.czbank.coding.good.mapper.GoodMapper;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -30,6 +31,18 @@ public class GoodController {
         qw.orderByDesc("id");
         Page<Good> page = new Page<>(currentPage, pageSize);
         map.put("page", goodMapper.selectPage(page, qw));
+        return map;
+    }
+
+    public Map<String, Object> getGoodListByType(@RequestParam Integer currentPage, @RequestParam Integer pageSize, Good good) {
+        Map<String, Object> map = new HashMap<>();
+        QueryWrapper<Good> qw = new QueryWrapper<>();
+        qw.orderByDesc("id");
+        if (!StringUtils.isEmpty(good.getBigClassify())) {
+            qw.eq("big_classfiy", good.getBigClassify());
+        } else if (!StringUtils.isEmpty(good.getSmallClassify())) {
+            qw.eq("small_classify", good.getSmallClassify());
+        }
         return map;
     }
 
