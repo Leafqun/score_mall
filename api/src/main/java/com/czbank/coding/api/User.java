@@ -52,4 +52,7 @@ public class User implements Serializable,Cloneable{
     /** 更新时间 */
     private LocalDateTime updatedTime ;
 
+    private String avatar;
+
+
 }
