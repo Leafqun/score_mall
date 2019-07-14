@@ -64,8 +64,7 @@ public class GoodOrdersController {
             (@RequestParam Integer currentPage, @RequestParam Integer pageSize,GoodOrders goodOrders){
         Map<String,Object> map = new HashMap<>();
         QueryWrapper<GoodOrders> qw = new QueryWrapper<>();
-
-        if(goodOrders.getOrdersId()!=null){
+         if(goodOrders.getOrdersId()!=null){
             qw.eq("orders_id",goodOrders.getOrdersId());
         }
         else if (goodOrders.getGoodId()!=null){
@@ -91,9 +90,14 @@ public class GoodOrdersController {
     @GetMapping("deleteByType")//需要修改
     public Map<String,Object> deleteByType(GoodOrders goodOrders){
         Map<String,Object> map = new HashMap<>();
-
         QueryWrapper<GoodOrders> qw = new QueryWrapper<>();
-        if(goodOrders.getOrdersId()!=null){
+        if (goodOrders.getOrdersId()!=null && goodOrders.getGoodId()!=null){
+            Map<String,Object> map0 = new HashMap<>();
+            map0.put("orders_id", goodOrders.getOrdersId());
+            map0.put("good_id", goodOrders.getGoodId());
+            qw.allEq(map0);
+        }
+        else if(goodOrders.getOrdersId()!=null){
             qw.eq("orders_id",goodOrders.getOrdersId());
         }
         else if (goodOrders.getGoodId()!=null){
@@ -110,9 +114,7 @@ public class GoodOrdersController {
     @GetMapping("update")//订单ID和物品ID不为空，可修改物品数量
     public Map<String,Object> update(GoodOrders goodOrders){
         Map<String,Object> map = new HashMap<>();
-
         QueryWrapper<GoodOrders> qw = new QueryWrapper<>();
-
         if(goodOrders.getGoodId()!=null && goodOrders.getOrdersId()!=null){
             map.put("orders_id", goodOrders.getOrdersId());
             map.put("good_id", goodOrders.getGoodId());
@@ -128,12 +130,11 @@ public class GoodOrdersController {
             map2.put("msg", "未找到对象，修改失败");
             return map2;
         }
+
         goodOrders1.setNumber(goodOrders.getNumber());
-        goodOrders1.setCreatedBy("tt");
-//        goodOrders1.setGoodId(10);
-        Map<String,Object> map1 = new HashMap<>();
-        map1.put("update",goodOrdersMapper.updateById(goodOrders1));
-        return map1;
+        Map<String,Object> mapfinal = new HashMap<>();
+        mapfinal.put("update",goodOrdersMapper.updateById(goodOrders1));
+        return mapfinal;
     }
 
     //增加
