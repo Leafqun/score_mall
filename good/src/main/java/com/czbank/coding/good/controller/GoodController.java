@@ -57,9 +57,9 @@ public class GoodController {
     }
 
     @GetMapping("getGood")
-    public Map<String, Object> getGood(Integer id) {
+    public Map<String,Object> getGood(Integer id) {
         Map<String, Object> map = new HashMap<>();
-        map.put("good", goodMapper.selectById(id));
+        map.put("good",goodMapper.selectById(id));
         return map;
     }
 
@@ -79,6 +79,12 @@ public class GoodController {
             map.put("msg", "请输入查询信息");
         }
         return map;
+    }
+    @GetMapping("getGoodScore")
+    public Integer getGoodScore(Integer id){
+        Good good = new Good();
+        good = goodMapper.selectById(id);
+        return good.getScorePrice();
     }
 }
 

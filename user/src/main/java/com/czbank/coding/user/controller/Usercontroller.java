@@ -212,11 +212,12 @@ public class Usercontroller {
     @GetMapping("pay")
     public Map<String,Object> pay(Integer id,@RequestParam String password) {
         Map<String, Object> map = new HashMap<>();
+        Map<String, Object> map1 = new HashMap<>();
+        Integer goodScore;
         User user = userMapper.selectById(id);
         if (password.equals(user.getPassword())) {
-//            map.put("score", user.getScore());
-            map.put("id",id);
-            return template.getForEntity("http://good/good/getGood?id={id}", Map.class,map).getBody();
+           goodScore = template.getForEntity("http://good/good/getGoodScore?id={id}", Integer.class,id).getBody();
+           user.setScore(user.getScore()-goodScore);
         } else {
             map.put("msg", "密码错误");
             return map;
