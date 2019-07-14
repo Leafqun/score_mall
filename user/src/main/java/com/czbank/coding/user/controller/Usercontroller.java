@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.Resource;
 import java.util.HashMap;
@@ -21,6 +22,8 @@ import java.util.regex.Pattern;
 public class Usercontroller {
     @Resource
     private UserMapper userMapper;
+    @Resource
+    private RestTemplate template;
 
     private static Pattern NUMBER_PATTERN = Pattern.compile("^[-\\+]?[\\d]*$");
 
@@ -51,10 +54,10 @@ public class Usercontroller {
 //        return map;
 
     @GetMapping("update")
-    public Map<String,Object> userUpdate(@RequestParam String nickname, @RequestParam String address,
-                                         @RequestParam String bankaccount,@RequestParam String mail
-            ,@RequestParam String name,@RequestParam String password,@RequestParam String phone,
-                                         @RequestParam Integer id) {
+    public Map<String, Object> userUpdate(@RequestParam String nickname, @RequestParam String address,
+                                          @RequestParam String bankaccount, @RequestParam String mail
+            , @RequestParam String name, @RequestParam String password, @RequestParam String phone,
+                                          @RequestParam Integer id) {
         Map<String, Object> map = new HashMap<>();
         User user = new User();
         user.setId(id);
@@ -65,29 +68,18 @@ public class Usercontroller {
         user.setPassword(password);
         user.setPhone(phone);
         userMapper.updateById(user);
-        map.put("修改成功",userMapper.selectById(id));
+        map.put("修改成功", userMapper.selectById(id));
         return map;
     }
 
-    //    Map<String, Object> map = new HashMap<>();
-//    QueryWrapper<Good> qw = new QueryWrapper<>();
-//        qw.orderByDesc("id");
-//        if (!StringUtils.isEmpty(good.getBigClassify())) {
-//        qw.eq("big_classify", good.getBigClassify());
-//    } else if (!StringUtils.isEmpty(good.getSmallClassify())) {
-//        qw.eq("small_classify", good.getSmallClassify());
-//    } else {
-//        map.put("msg", "类型信息为空");
-//        return map;
-//    }
     /**
      * 通过ID查询
      */
     @GetMapping("selectByID")
-    public Map<String,Object> userSelectByID(Integer id) {
+    public Map<String, Object> userSelectByID(Integer id) {
         Map<String, Object> map = new HashMap<>();
         User user = userMapper.selectById(id);
-        map.put("Sucess",user);
+        map.put("Sucess", user);
         return map;
     }
 
@@ -175,25 +167,21 @@ public class Usercontroller {
 //    }
 
 
-
-
     /**
      * 登录（伪）
      */
 
-    @GetMapping ("login")
-    public Map<String,Object> login(@RequestParam String phone, @RequestParam String password) {
+    @GetMapping("login")
+    public Map<String, Object> login(@RequestParam String phone, @RequestParam String password) {
         Map<String, Object> map = new HashMap<>();
         QueryWrapper<User> qw = new QueryWrapper<>();
-
         if (NUMBER_PATTERN.matcher(phone).matches()) {
-            qw.eq("phone",phone);
+            qw.eq("phone", phone);
         } else {
             qw.eq("nickname", phone);
         }
         qw.select("id", "nickname", "password", "avatar", "phone");
         User user = userMapper.selectOne(qw);
-<<<<<<< HEAD
         if (user == null) {
             map.put("msg", "手机号未注册或者用户名未注册");
             return map;
@@ -205,15 +193,46 @@ public class Usercontroller {
         user.setPassword(null);
         map.put("msg", "success");
         map.put("user", user);
-=======
-        if (user != null && password.equals(user.getPassword())) {
-            map.clear();
-            map.put("sucess",userMapper.selectMaps(qw.select("id","nickname","avatar")));
-    }
->>>>>>> 624601058f0aa858820f155dee3c4e777a0d9a8d
         return map;
     }
+//   if (user != null && password.equals(user.getPassword())) {
+//           map.clear();
+//           map.put("sucess",userMapper.selectMaps(qw.select("id","nickname","avatar")));
+//           }
+//           return map;
+    /**
+     *
+     */
+//    HashMap<String, Object> map = new HashMap<>();
+//        map.put("currentPage", 1);
+//        map.put("pageSize", 10);
+//        return restTemplate.getForObject(
+// "http://good/good/getGoodList?currentPage={currentPage}&pageSize={pageSize}", Object.class, map);
+
+    @GetMapping("pay")
+    public Map<String,Object> pay(Integer id,@RequestParam String password) {
+        Map<String, Object> map = new HashMap<>();
+        User user = userMapper.selectById(id);
+        if (password.equals(user.getPassword())) {
+//            map.put("score", user.getScore());
+            map.put("id",id);
+            return template.getForEntity("http://good/good/getGood?id={id}", Map.class,map).getBody();
+        } else {
+            map.put("msg", "密码错误");
+            return map;
+        }
+
+    }
+    @GetMapping("test")
+        public Map<String,Object> TEST(Integer id){
+            Map<String, Object> map = new HashMap<>();
+            template.getForEntity("http://good/good/getGood?id={id}", Map.class,id).getBody();
+            map.put("",template.getForEntity("http://good/good/getGood?id={id}", Map.class,id).getBody());
+            return map;
+    }
+
 }
+
 
 
 

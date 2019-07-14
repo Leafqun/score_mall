@@ -6,6 +6,7 @@ import com.czbank.coding.api.Good;
 import com.czbank.coding.good.mapper.GoodMapper;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.Resource;
 import java.util.HashMap;
@@ -18,6 +19,9 @@ public class GoodController {
 
     @Resource
     private GoodMapper goodMapper;
+
+    @Resource
+    private RestTemplate restTemplate;
 
     @GetMapping("getList")
     public Object getList() {
@@ -52,7 +56,7 @@ public class GoodController {
         return map;
     }
 
-    @GetMapping("/getGood")
+    @GetMapping("getGood")
     public Map<String, Object> getGood(Integer id) {
         Map<String, Object> map = new HashMap<>();
         map.put("good", goodMapper.selectById(id));
