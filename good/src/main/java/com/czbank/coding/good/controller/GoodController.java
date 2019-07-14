@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.czbank.coding.api.Good;
 import com.czbank.coding.good.mapper.GoodMapper;
+import com.czbank.coding.good.service.GoodService;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,6 +19,9 @@ public class GoodController {
 
     @Resource
     private GoodMapper goodMapper;
+
+    @Resource
+    private GoodService goodService;
 
     @GetMapping("getList")
     public Object getList() {
@@ -36,20 +40,8 @@ public class GoodController {
 
     @GetMapping("/getGoodListByType")
     public Map<String, Object> getGoodListByType(@RequestParam Integer currentPage, @RequestParam Integer pageSize, Good good) {
-        Map<String, Object> map = new HashMap<>();
-        QueryWrapper<Good> qw = new QueryWrapper<>();
-        qw.orderByDesc("id");
-        if (!StringUtils.isEmpty(good.getBigClassify())) {
-            qw.eq("big_classify", good.getBigClassify());
-        } else if (!StringUtils.isEmpty(good.getSmallClassify())) {
-            qw.eq("small_classify", good.getSmallClassify());
-        } else {
-            map.put("msg", "类型信息为空");
-            return map;
-        }
         Page<Good> page = new Page<>(currentPage, pageSize);
-        map.put("page", goodMapper.selectPage(page, qw));
-        return map;
+        return goodService.selectGoodListByType(page, good);
     }
 
     @GetMapping("/getGood")
@@ -62,7 +54,7 @@ public class GoodController {
     @GetMapping("getGoodListByName")
     public Map<String, Object> getGoodListLike(@RequestParam Integer currentPage, @RequestParam Integer pageSize, @RequestParam String name) {
         Map<String, Object> map = new HashMap<>();
-        QueryWrapper qw = new QueryWrapper();
+        QueryWrapper<Good> qw = new QueryWrapper<>();
         qw.orderByDesc("id");
         if (!StringUtils.isEmpty(name)) {
             if (!StringUtils.isEmpty(qw.like("good_name",name))) {

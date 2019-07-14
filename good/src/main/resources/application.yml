@@ -17,6 +17,16 @@ spring:
     local_port: 3307
     remote_host: localhost
     remote_port: 3306
+  cache:
+    ehcache:
+      config: classpath:ehcache.xml
+    type: ehcache
+  redis:
+    database: 0
+    host: 119.23.22.99
+    port: 6379
+    password:
+    timeout: 2000s
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
