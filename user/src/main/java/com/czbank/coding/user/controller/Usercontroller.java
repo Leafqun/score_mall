@@ -69,6 +69,17 @@ public class Usercontroller {
         return map;
     }
 
+    //    Map<String, Object> map = new HashMap<>();
+//    QueryWrapper<Good> qw = new QueryWrapper<>();
+//        qw.orderByDesc("id");
+//        if (!StringUtils.isEmpty(good.getBigClassify())) {
+//        qw.eq("big_classify", good.getBigClassify());
+//    } else if (!StringUtils.isEmpty(good.getSmallClassify())) {
+//        qw.eq("small_classify", good.getSmallClassify());
+//    } else {
+//        map.put("msg", "类型信息为空");
+//        return map;
+//    }
     /**
      * 通过ID查询
      */
@@ -169,6 +180,7 @@ public class Usercontroller {
     /**
      * 登录（伪）
      */
+
     @GetMapping ("login")
     public Map<String,Object> login(@RequestParam String phone, @RequestParam String password) {
         Map<String, Object> map = new HashMap<>();
@@ -181,6 +193,7 @@ public class Usercontroller {
         }
         qw.select("id", "nickname", "password", "avatar", "phone");
         User user = userMapper.selectOne(qw);
+<<<<<<< HEAD
         if (user == null) {
             map.put("msg", "手机号未注册或者用户名未注册");
             return map;
@@ -192,6 +205,12 @@ public class Usercontroller {
         user.setPassword(null);
         map.put("msg", "success");
         map.put("user", user);
+=======
+        if (user != null && password.equals(user.getPassword())) {
+            map.clear();
+            map.put("sucess",userMapper.selectMaps(qw.select("id","nickname","avatar")));
+    }
+>>>>>>> 624601058f0aa858820f155dee3c4e777a0d9a8d
         return map;
     }
 }
