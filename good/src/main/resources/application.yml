@@ -14,7 +14,7 @@ spring:
     user: root
     pwd: Leafqun@yeah.net
     port: 22
-    local_port: 3309
+    local_port: 3307
     remote_host: localhost
     remote_port: 3306
   datasource:
@@ -29,4 +29,4 @@ spring:
 spring:
   profiles: prod
   datasource:
-    url: jdbc:mysql://localhost:3309/score_mall?characterEncoding=UTF-8&useUnicode=true&useSSL=false
+    url: jdbc:mysql://localhost:3307/score_mall?characterEncoding=UTF-8&useUnicode=true&useSSL=false

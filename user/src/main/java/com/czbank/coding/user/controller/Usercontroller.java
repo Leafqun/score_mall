@@ -11,17 +11,18 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.annotation.Resource;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 /**
  *
  */
 @RestController
 @RequestMapping("user")
-
 public class Usercontroller {
     @Resource
     private UserMapper userMapper;
 
+    private static Pattern NUMBER_PATTERN = Pattern.compile("^[-\\+]?[\\d]*$");
 
 //    @GetMapping("insert")
 //    public Map<String,Object> userInsert(@RequestParam Integer nickname, @RequestParam String address,
@@ -181,16 +182,35 @@ public class Usercontroller {
      */
 
     @GetMapping ("login")
-    public Map<String,Object> login(String phone, String password) {
+    public Map<String,Object> login(@RequestParam String phone, @RequestParam String password) {
         Map<String, Object> map = new HashMap<>();
-        QueryWrapper qw = new QueryWrapper();
-        map.put("fail",null);
-        qw.eq("phone",phone);
+        QueryWrapper<User> qw = new QueryWrapper<>();
+
+        if (NUMBER_PATTERN.matcher(phone).matches()) {
+            qw.eq("phone",phone);
+        } else {
+            qw.eq("nickname", phone);
+        }
+        qw.select("id", "nickname", "password", "avatar", "phone");
         User user = userMapper.selectOne(qw);
+<<<<<<< HEAD
+        if (user == null) {
+            map.put("msg", "手机号未注册或者用户名未注册");
+            return map;
+        }
+        if (!password.equals(user.getPassword())) {
+            map.put("msg", "密码错误");
+            return map;
+        }
+        user.setPassword(null);
+        map.put("msg", "success");
+        map.put("user", user);
+=======
         if (user != null && password.equals(user.getPassword())) {
             map.clear();
             map.put("sucess",userMapper.selectMaps(qw.select("id","nickname","avatar")));
     }
+>>>>>>> 624601058f0aa858820f155dee3c4e777a0d9a8d
         return map;
     }
 }
