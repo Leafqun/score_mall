@@ -87,7 +87,7 @@ public class Usercontroller {
     public Map<String,Object> userSelectByID(Integer id) {
         Map<String, Object> map = new HashMap<>();
         User user = userMapper.selectById(id);
-        map.put("Sucess",user);
+        map.put("user",user);
         return map;
     }
 
