@@ -164,7 +164,7 @@ public class Usercontroller {
 //        return "Sucessfully delete";
 //    }
 
-//    @GetMapping("/getGoodList")
+ //@GetMapping("/getGoodList")
 //    public Map<String, Object> getGoodList(@RequestParam Integer currentPage, @RequestParam Integer pageSize) {
 //        Map<String, Object> map = new HashMap<>();
 //        QueryWrapper<Good> qw = new QueryWrapper<>();
@@ -193,7 +193,6 @@ public class Usercontroller {
         }
         qw.select("id", "nickname", "password", "avatar", "phone");
         User user = userMapper.selectOne(qw);
-<<<<<<< HEAD
         if (user == null) {
             map.put("msg", "手机号未注册或者用户名未注册");
             return map;
@@ -205,12 +204,10 @@ public class Usercontroller {
         user.setPassword(null);
         map.put("msg", "success");
         map.put("user", user);
-=======
         if (user != null && password.equals(user.getPassword())) {
             map.clear();
             map.put("sucess",userMapper.selectMaps(qw.select("id","nickname","avatar")));
     }
->>>>>>> 624601058f0aa858820f155dee3c4e777a0d9a8d
         return map;
     }
 }
