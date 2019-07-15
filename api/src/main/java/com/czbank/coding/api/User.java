@@ -34,7 +34,7 @@ public class User implements Serializable,Cloneable{
     /** 账号状态 */
     private String status ;
     /** 积分 */
-    private String score ;
+    private Integer score ;
     /** 姓名 */
     private String name ;
     /** 地址 */
@@ -53,6 +53,7 @@ public class User implements Serializable,Cloneable{
     private LocalDateTime updatedTime ;
 
     private String avatar;
+
 
 
 }

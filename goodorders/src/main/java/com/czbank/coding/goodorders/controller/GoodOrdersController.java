@@ -64,8 +64,7 @@ public class GoodOrdersController {
             (@RequestParam Integer currentPage, @RequestParam Integer pageSize,GoodOrders goodOrders){
         Map<String,Object> map = new HashMap<>();
         QueryWrapper<GoodOrders> qw = new QueryWrapper<>();
-
-        if(goodOrders.getOrdersId()!=null){
+         if(goodOrders.getOrdersId()!=null){
             qw.eq("orders_id",goodOrders.getOrdersId());
         }
         else if (goodOrders.getGoodId()!=null){
@@ -91,9 +90,14 @@ public class GoodOrdersController {
     @GetMapping("deleteByType")//需要修改
     public Map<String,Object> deleteByType(GoodOrders goodOrders){
         Map<String,Object> map = new HashMap<>();
-
         QueryWrapper<GoodOrders> qw = new QueryWrapper<>();
-        if(goodOrders.getOrdersId()!=null){
+        if (goodOrders.getOrdersId()!=null && goodOrders.getGoodId()!=null){
+            Map<String,Object> map0 = new HashMap<>();
+            map0.put("orders_id", goodOrders.getOrdersId());
+            map0.put("good_id", goodOrders.getGoodId());
+            qw.allEq(map0);
+        }
+        else if(goodOrders.getOrdersId()!=null){
             qw.eq("orders_id",goodOrders.getOrdersId());
         }
         else if (goodOrders.getGoodId()!=null){
@@ -106,6 +110,39 @@ public class GoodOrdersController {
         map.put("delete",goodOrdersMapper.delete(qw));
         return map;
     }
+    //修改
+    @GetMapping("update")//订单ID和物品ID不为空，可修改物品数量
+    public Map<String,Object> update(GoodOrders goodOrders){
+        Map<String,Object> map = new HashMap<>();
+        QueryWrapper<GoodOrders> qw = new QueryWrapper<>();
+        if(goodOrders.getGoodId()!=null && goodOrders.getOrdersId()!=null){
+            map.put("orders_id", goodOrders.getOrdersId());
+            map.put("good_id", goodOrders.getGoodId());
+            qw.allEq(map);
+        }
+        else {
+            map.put("msg", "请求参数为空");
+        }
 
+        GoodOrders goodOrders1 = goodOrdersMapper.selectOne(qw);
+        if (goodOrders1 == null) {
+            Map<String,Object> map2 = new HashMap<>();
+            map2.put("msg", "未找到对象，修改失败");
+            return map2;
+        }
+
+        goodOrders1.setNumber(goodOrders.getNumber());
+        Map<String,Object> mapfinal = new HashMap<>();
+        mapfinal.put("update",goodOrdersMapper.updateById(goodOrders1));
+        return mapfinal;
+    }
+
+    //增加
+    @GetMapping("insert")
+    public Map<String,Object> insert( GoodOrders goodOrders){
+        Map<String,Object> map = new HashMap<>();
+        map.put("insert",goodOrdersMapper.insert(goodOrders));
+        return map;
+    }
 
 }
