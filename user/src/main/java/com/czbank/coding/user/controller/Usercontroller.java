@@ -79,11 +79,8 @@ public class Usercontroller {
     public Map<String, Object> userSelectByID(Integer id) {
         Map<String, Object> map = new HashMap<>();
         User user = userMapper.selectById(id);
-<<<<<<< HEAD
         map.put("user",user);
-=======
         map.put("Sucess", user);
->>>>>>> cb05f921744417002884691672503b7e502d5c99
         return map;
     }
 
@@ -222,14 +219,15 @@ public class Usercontroller {
         if (password.equals(user.getPassword())) {
            goodScore = template.getForEntity("http://good/good/getGoodScore?id={id}", Integer.class,id).getBody();
            user.setScore(user.getScore()-goodScore);
+           map.put("msg", "success");
         } else {
             map.put("msg", "密码错误");
-            return map;
-        }
 
+        }
+        return map;
     }
     @GetMapping("test")
-        public Map<String,Object> TEST(Integer id){
+        public Map<String,Object> test(Integer id){
             Map<String, Object> map = new HashMap<>();
             template.getForEntity("http://good/good/getGood?id={id}", Map.class,id).getBody();
             map.put("",template.getForEntity("http://good/good/getGood?id={id}", Map.class,id).getBody());
