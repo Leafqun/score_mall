@@ -82,9 +82,18 @@ public class GoodController {
     }
     @GetMapping("getGoodScore")
     public Integer getGoodScore(Integer id){
-        Good good = new Good();
+        new Good();
+        Good good;
         good = goodMapper.selectById(id);
         return good.getScorePrice();
+    }
+
+    @GetMapping("goodMinus")
+    public Integer goodMinus(Integer id){
+        Good good = new Good();
+        good = goodMapper.selectById(id);
+        good.setStore(good.getStore()-1);
+        return good.getStore();
     }
 }
 

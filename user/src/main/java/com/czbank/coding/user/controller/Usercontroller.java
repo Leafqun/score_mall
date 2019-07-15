@@ -185,42 +185,34 @@ public class Usercontroller {
         map.put("user", user);
         return map;
     }
-//   if (user != null && password.equals(user.getPassword())) {
-//           map.clear();
-//           map.put("sucess",userMapper.selectMaps(qw.select("id","nickname","avatar")));
-//           }
-//           return map;
-    /**
-     *
-     */
-//    HashMap<String, Object> map = new HashMap<>();
-//        map.put("currentPage", 1);
-//        map.put("pageSize", 10);
-//        return restTemplate.getForObject(
-// "http://good/good/getGoodList?currentPage={currentPage}&pageSize={pageSize}", Object.class, map);
+
 
     @GetMapping("pay")
-    public Map<String,Object> pay(Integer id,@RequestParam String password) {
+    public Map<String,Object> pay(@RequestParam Integer userid,@RequestParam Integer goodid,@RequestParam String password) {
         Map<String, Object> map = new HashMap<>();
         Map<String, Object> map1 = new HashMap<>();
+        QueryWrapper<User> qw = new QueryWrapper<>();
         Integer goodScore;
-        User user = userMapper.selectById(id);
+        User user = userMapper.selectById(userid);
+        map1.put("id", user.getId());
+        map1.put("password", user.getPassword());
+        qw.allEq(map1);
         if (password.equals(user.getPassword())) {
-           goodScore = template.getForEntity("http://good/good/getGoodScore?id={id}", Integer.class,id).getBody();
-           user.setScore(user.getScore()-goodScore);
-           map.put("msg", "success");
-        } else {
+            goodScore = template.getForEntity("http://good/good/getGoodScore?id={goodid}", Integer.class, goodid).getBody();
+            user.setScore(user.getScore() - goodScore);
+            userMapper.updateById(user);
+            if (user.getScore()>= 0) {
+                qw.select("id", "score");
+                map.put("score", userMapper.selectOne(qw));
+                System.out.println(user.getScore());
+            } else {
+                map.put("msg", "积分余额不足");
+            }
+        }
+         else {
             map.put("msg", "密码错误");
-
         }
         return map;
-    }
-    @GetMapping("test")
-        public Map<String,Object> test(Integer id){
-            Map<String, Object> map = new HashMap<>();
-            template.getForEntity("http://good/good/getGood?id={id}", Map.class,id).getBody();
-            map.put("",template.getForEntity("http://good/good/getGood?id={id}", Map.class,id).getBody());
-            return map;
     }
 
 }
