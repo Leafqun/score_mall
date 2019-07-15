@@ -69,7 +69,7 @@ public class OrdersController {
 
 
     /*
-    //修改订单
+    //修改订单，
     @GetMapping("update")//订单ID和物品ID不为空，可修改物品数量
     public Map<String,Object> update(GoodOrders goodOrders){
         Map<String,Object> map = new HashMap<>();
