@@ -54,6 +54,8 @@ public class User implements Serializable,Cloneable{
 
     private String avatar;
 
+    private LocalDateTime birthdate;
+
 
 
 }

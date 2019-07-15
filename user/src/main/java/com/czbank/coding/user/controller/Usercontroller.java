@@ -1,7 +1,9 @@
 package com.czbank.coding.user.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.czbank.coding.api.Card;
 import com.czbank.coding.api.User;
+import com.czbank.coding.user.mapper.CardMapper;
 import com.czbank.coding.user.mapper.UserMapper;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,36 +24,23 @@ import java.util.regex.Pattern;
 public class Usercontroller {
     @Resource
     private UserMapper userMapper;
+
+    @Resource
+    private CardMapper cardMapper;
+
     @Resource
     private RestTemplate template;
 
     private static Pattern NUMBER_PATTERN = Pattern.compile("^[-\\+]?[\\d]*$");
 
-//    @GetMapping("insert")
-//    public Map<String,Object> userInsert(@RequestParam Integer nickname, @RequestParam String address,
-//                                         @RequestParam String bankaccount,@RequestParam String mail
-//    ,@RequestParam String name,@RequestParam String password,@RequestParam String phone) {
-//        //增加即注册
-//        User user = new User();
-//        Map<String, Object> map = new HashMap<>();
-//        user.setNickname(nickname);
-//        user.setAddress(address);
-//        user.setBankaccount(bankaccount);
-//        user.setMail(mail);
-//        user.setName(name);
-//        user.setPassword(password);
-//        user.setPhone(phone);
-//        userMapper.insert(user);
-//        return userMapper.selectList(null);
-//    }
-
-    //    public Map<String, Object> getGoodList(@RequestParam Integer currentPage, @RequestParam Integer pageSize) {
-//        Map<String, Object> map = new HashMap<>();
-//        QueryWrapper<Good> qw = new QueryWrapper<>();
-//        qw.orderByDesc("id");
-//        Page<Good> page = new Page<>(currentPage, pageSize);
-//        map.put("page", goodMapper.selectPage(page, qw));
-//        return map;
+    @GetMapping("getCardListByUserId")
+    public Map<String, Object> getCardListByUserId(@RequestParam Integer userid) {
+        Map<String, Object> map = new HashMap<>();
+        QueryWrapper<Card> qw = new QueryWrapper<>();
+        qw.eq("user_id", userid);
+        map.put("cardList", cardMapper.selectList(qw));
+        return map;
+    }
 
     @GetMapping("update")
     public Map<String, Object> userUpdate(@RequestParam String nickname, @RequestParam String address,
