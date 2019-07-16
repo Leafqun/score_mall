@@ -204,7 +204,6 @@ public class Usercontroller {
             if (user.getScore()>= 0) {
                 qw.select("id", "score");
                 map.put("score", userMapper.selectOne(qw));
-                System.out.println(user.getScore());
             } else {
                 map.put("msg", "积分余额不足");
             }

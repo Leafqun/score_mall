@@ -65,8 +65,6 @@ public class OrdersController {
       public String ordersDeleteByID(Integer account_id) {
             ordersMapper.deleteById(account_id);
             return "订单删除成功";
-
-
        }
 
 
