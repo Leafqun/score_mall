@@ -1,4 +1,4 @@
-package com.czbank.coding.api;
+package api;
 
 
 import com.baomidou.mybatisplus.annotation.IdType;

@@ -1,8 +1,8 @@
 package com.czbank.coding.orders.controller;
 
+import api.Orders;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.czbank.coding.api.Orders;
 import com.czbank.coding.orders.mapper.OrdersMapper;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,21 +19,15 @@ public class OrdersController {
 
     //增加，付款成功后添加订单信息
     @GetMapping("insertOrders")
-    public Map<String, Object> ordersInsert(@RequestParam Integer accountId, @RequestParam LocalDateTime createtime, @RequestParam String address,
-                                            @RequestParam String phone, @RequestParam String note
-            , @RequestParam String status) {
-
-        Orders orders = new Orders();
+    public Map<String, Object> ordersInsert(Orders orders) {
         Map<String, Object> map = new HashMap<>();
-        orders.setAccountId(accountId);
-        orders.setCreateTime(createtime);
-        orders.setAdrress(address);
-        orders.setPhone(phone);
-        orders.setNote(note);
-        orders.setStatus(status);
-
-        ordersMapper.insert(orders);
-        return (Map<String, Object>) ordersMapper.selectList(null);
+        orders.setCreateTime(LocalDateTime.now());
+        if (ordersMapper.insert(orders) == 1) {
+            map.put("msg", "success");
+        } else {
+            map.put("msg", "success");
+        }
+        return map;
     }
 
     @RequestMapping(value = "/updateOrders", method = {RequestMethod.GET, RequestMethod.POST})
@@ -72,9 +66,14 @@ public class OrdersController {
 
     //删除订单，用户需要删除时
     @GetMapping("deleteOrdersById")
-      public String ordersDeleteById(Integer accountId) {
-            ordersMapper.deleteById(accountId);
-            return "订单删除成功";
+      public Map<String, Object> ordersDeleteById(Integer id) {
+        Map<String, Object> map = new HashMap<>();
+            if (ordersMapper.deleteById(id) == 1) {
+                map.put("msg", "success");
+            } else {
+                map.put("msg", "更新失败");
+            }
+        return map;
        }
 
 

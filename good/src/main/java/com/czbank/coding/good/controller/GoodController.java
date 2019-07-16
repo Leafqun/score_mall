@@ -1,8 +1,8 @@
 package com.czbank.coding.good.controller;
 
+import api.Good;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.czbank.coding.api.Good;
 import com.czbank.coding.good.mapper.GoodMapper;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;

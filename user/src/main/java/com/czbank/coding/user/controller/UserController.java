@@ -1,10 +1,11 @@
 package com.czbank.coding.user.controller;
 
+import api.Address;
+import api.Card;
+import api.User;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.czbank.coding.api.Address;
-import com.czbank.coding.api.Card;
-import com.czbank.coding.api.User;
+
 import com.czbank.coding.user.mapper.AddressMapper;
 import com.czbank.coding.user.mapper.CardMapper;
 import com.czbank.coding.user.mapper.UserMapper;
@@ -264,6 +265,7 @@ public class UserController {
          else {
             map.put("msg", "密码错误");
         }
+         map.put("msg", "success");
         return map;
 
     }

@@ -1,9 +1,9 @@
 package com.czbank.coding.good.service.impl;
 
+import api.Good;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.czbank.coding.api.Good;
 import com.czbank.coding.good.mapper.GoodMapper;
 import com.czbank.coding.good.service.GoodService;
 import com.czbank.coding.good.util.EhcacheUtil;

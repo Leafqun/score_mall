@@ -1,5 +1,4 @@
-package com.czbank.coding.api;
-
+package api;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -17,47 +16,44 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@TableName(value = "USER")
-public class User implements Serializable,Cloneable{
-    /** 账号ID */
+@TableName(value = "ORDERS")
+public class Orders implements Serializable,Cloneable{
+
     @TableId(value = "id" , type = IdType.AUTO)
     private Integer id ;
-    /** 昵称 */
-    private String nickname ;
+    /** 账号ID */
+    private Integer accountId ;
+    /** 地址 */
+    private String adrress ;
     /** 手机号 */
     private String phone ;
-    /** 银行卡号 */
-    private String bankaccount ;
-    /** 账号密码 */
-    private String password ;
-    /** 账号类型 */
-    private String type ;
-    /** 账号状态 */
+    /** 备注 */
+    private String note ;
+    /** 状态 */
     private String status ;
-    /** 积分 */
-    private Integer score ;
-    /** 姓名 */
-    private String name ;
-    /** 地址 */
-    private String address ;
-    /** 邮箱 */
-    private String mail ;
     /** 乐观锁 */
     private Integer revision ;
     /** 创建人 */
     private String createdBy ;
     /** 创建时间 */
-    private LocalDateTime createdTime ;
+    @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime createTime ;
     /** 更新人 */
     private String updatedBy ;
     /** 更新时间 */
     private LocalDateTime updatedTime ;
 
-    private String avatar;
+    private Integer goodId;
 
-    @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
-    private LocalDateTime birthdate;
+    private String goodName;
 
+    private String goodPic;
 
+    private Integer price;
 
+    private Integer goodNum;
+
+    private Integer integral;
+
+    private Integer method;
 }

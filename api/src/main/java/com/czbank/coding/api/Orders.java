@@ -3,6 +3,7 @@ package com.czbank.coding.api;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -35,6 +36,7 @@ public class Orders implements Serializable,Cloneable{
     /** 创建人 */
     private String createdBy ;
     /** 创建时间 */
+    @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createTime ;
     /** 更新人 */
     private String updatedBy ;
@@ -53,5 +55,5 @@ public class Orders implements Serializable,Cloneable{
 
     private Integer integral;
 
-    private Integer methods;
+    private Integer method;
 }

@@ -1,7 +1,7 @@
 package com.czbank.coding.good.service;
 
+import api.Good;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.czbank.coding.api.Good;
 
 import java.util.List;
 import java.util.Map;

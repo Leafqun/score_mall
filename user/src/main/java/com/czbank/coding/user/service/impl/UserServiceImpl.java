@@ -1,8 +1,8 @@
 package com.czbank.coding.user.service.impl;
 
+import api.Address;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
-import com.czbank.coding.api.Address;
 import com.czbank.coding.user.mapper.AddressMapper;
 import com.czbank.coding.user.service.UserService;
 import org.springframework.stereotype.Service;
