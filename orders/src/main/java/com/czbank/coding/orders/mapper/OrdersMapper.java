@@ -1,7 +1,7 @@
 package com.czbank.coding.orders.mapper;
 
+import api.Orders;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.czbank.coding.api.Orders;
 import org.apache.ibatis.annotations.Mapper;
 
 @Mapper

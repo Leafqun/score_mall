@@ -21,11 +21,11 @@
 
     <dependencies>
 
-        <dependency>
+        <!--<dependency>
             <groupId>com.czbank.coding</groupId>
             <artifactId>api</artifactId>
             <version>1.0-SNAPSHOT</version>
-        </dependency>
+        </dependency>-->
 
 
         <dependency>

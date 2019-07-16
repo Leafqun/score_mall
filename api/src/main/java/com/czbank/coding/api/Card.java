@@ -1,5 +1,6 @@
 package com.czbank.coding.api;
 
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -12,6 +13,7 @@ import lombok.NoArgsConstructor;
 @Builder
 public class Card {
 
+    @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
 
     private Integer userId;

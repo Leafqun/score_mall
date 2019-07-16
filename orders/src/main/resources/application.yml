@@ -3,18 +3,18 @@ eureka:
     serviceUrl:
       defaultZone: http://119.23.22.99:8888/eureka/
 server:
-  port: 8892
+  port: 9102
 spring:
   application:
     name: orders
   profiles:
-    active: prod
+    active: dev
   ssh:
     host: 119.23.22.99
     user: root
     pwd: Leafqun@yeah.net
     port: 22
-    local_port: 3309
+    local_port: 3310
     remote_host: localhost
     remote_port: 3306
   datasource:
@@ -27,6 +27,13 @@ spring:
 ---
 # 生产环境配置
 spring:
+  profiles: dev
+  datasource:
+    url: jdbc:mysql://localhost:3310/score_mall?characterEncoding=UTF-8&useUnicode=true&useSSL=false
+
+---
+# 生产环境配置
+spring:
   profiles: prod
   datasource:
-    url: jdbc:mysql://localhost:3309/score_mall?characterEncoding=UTF-8&useUnicode=true&useSSL=false
+    url: jdbc:mysql://localhost:3306/score_mall?characterEncoding=UTF-8&useUnicode=true&useSSL=false

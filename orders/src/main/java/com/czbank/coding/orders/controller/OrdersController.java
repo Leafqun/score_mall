@@ -1,13 +1,10 @@
 package com.czbank.coding.orders.controller;
 
+import api.Orders;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.czbank.coding.api.Orders;
 import com.czbank.coding.orders.mapper.OrdersMapper;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.time.LocalDateTime;
@@ -22,22 +19,27 @@ public class OrdersController {
 
     //增加，付款成功后添加订单信息
     @GetMapping("insertOrders")
-    public Map<String, Object> ordersInsert(@RequestParam Integer account_id, @RequestParam LocalDateTime createtime, @RequestParam String address,
-                                            @RequestParam String phone, @RequestParam String note
-            , @RequestParam String status) {
-
-        Orders orders = new Orders();
+    public Map<String, Object> ordersInsert(Orders orders) {
         Map<String, Object> map = new HashMap<>();
-        orders.setAccountId(account_id);
-        orders.setCreatedTime(createtime);
-        orders.setAdrress(address);
-        orders.setPhone(phone);
-        orders.setNote(note);
-        orders.setStatus(status);
-
-        ordersMapper.insert(orders);
-        return (Map<String, Object>) ordersMapper.selectList(null);
+        orders.setCreateTime(LocalDateTime.now());
+        if (ordersMapper.insert(orders) == 1) {
+            map.put("msg", "success");
+        } else {
+            map.put("msg", "success");
+        }
+        return map;
     }
+
+    @RequestMapping(value = "/updateOrders", method = {RequestMethod.GET, RequestMethod.POST})
+    public Map<String, Object> updateOrders(Orders orders) {
+        Map<String, Object> map = new HashMap<>();
+        if (ordersMapper.updateById(orders) == 1) {
+            map.put("msg", "success");
+        } else {
+            map.put("msg", "更新失败");
+        }
+        return map;
+     }
 
 
     //查找订单，用户通过订单号查找
@@ -46,25 +48,32 @@ public class OrdersController {
         return (Object) ordersMapper.selectList(null);
     }
 
+
     @GetMapping("selectOrdersByID")
-    public Object selectById (@RequestParam Integer account_id){
-        return  ordersMapper.selectById(account_id);
+    public Object selectById (@RequestParam Integer accountId){
+        return  ordersMapper.selectById(accountId);
     }
 
-    @GetMapping("getListPage")
-    public Map<String, Object> getOrdersList(@RequestParam Integer currentPage, @RequestParam Integer pageSize) {
+    @GetMapping("getOrdersListByUserId")
+    public Map<String, Object> getOrdersListByUserId(@RequestParam Integer currentPage, @RequestParam Integer pageSize, @RequestParam Integer userId) {
         Map<String, Object> map = new HashMap<>();
         QueryWrapper<Orders> qw = new QueryWrapper<Orders>();
         Page<Orders> page = new Page<Orders>(currentPage, pageSize);
-        map.put("page", (Object) ordersMapper.selectPage(page, qw));
+        qw.eq("account_id", userId);
+        map.put("page", ordersMapper.selectPage(page, qw));
         return map;
     }
 
     //删除订单，用户需要删除时
     @GetMapping("deleteOrdersById")
-      public String ordersDeleteByID(Integer account_id) {
-            ordersMapper.deleteById(account_id);
-            return "订单删除成功";
+      public Map<String, Object> ordersDeleteById(Integer id) {
+        Map<String, Object> map = new HashMap<>();
+            if (ordersMapper.deleteById(id) == 1) {
+                map.put("msg", "success");
+            } else {
+                map.put("msg", "更新失败");
+            }
+        return map;
        }
 
 
