@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Card {
+public class Address {
 
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
@@ -20,14 +20,9 @@ public class Card {
 
     private String place;
 
-    private Integer type;
+    private String phoneNum;
 
-    private String cardNum;
+    private String receiver;
 
-    private String currency;
-
-    private Double money;
-
-    private Double availableMoney;
-
+    private Integer first;
 }

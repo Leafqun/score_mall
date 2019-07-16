@@ -35,10 +35,23 @@ public class Orders implements Serializable,Cloneable{
     /** 创建人 */
     private String createdBy ;
     /** 创建时间 */
-    private LocalDateTime createdTime ;
+    private LocalDateTime createTime ;
     /** 更新人 */
     private String updatedBy ;
     /** 更新时间 */
     private LocalDateTime updatedTime ;
 
+    private Integer goodId;
+
+    private String goodName;
+
+    private String goodPic;
+
+    private Integer price;
+
+    private Integer goodNum;
+
+    private Integer integral;
+
+    private Integer methods;
 }

@@ -1,14 +1,15 @@
 package com.czbank.coding.user.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.czbank.coding.api.Address;
 import com.czbank.coding.api.Card;
 import com.czbank.coding.api.User;
+import com.czbank.coding.user.mapper.AddressMapper;
 import com.czbank.coding.user.mapper.CardMapper;
 import com.czbank.coding.user.mapper.UserMapper;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import com.czbank.coding.user.service.UserService;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.Resource;
@@ -21,12 +22,18 @@ import java.util.regex.Pattern;
  */
 @RestController
 @RequestMapping("user")
-public class Usercontroller {
+public class UserController {
     @Resource
     private UserMapper userMapper;
 
     @Resource
     private CardMapper cardMapper;
+
+    @Resource
+    private AddressMapper addressMapper;
+
+    @Resource
+    private UserService userService;
 
     @Resource
     private RestTemplate template;
@@ -39,6 +46,52 @@ public class Usercontroller {
         QueryWrapper<Card> qw = new QueryWrapper<>();
         qw.eq("user_id", userid);
         map.put("cardList", cardMapper.selectList(qw));
+        return map;
+    }
+
+    @GetMapping("/getFirstAddress")
+    public Map<String, Object> getFirstAddress(@RequestParam Integer userid) {
+        Map<String, Object> map = new HashMap<>();
+        QueryWrapper<Address> qw = new QueryWrapper<>();
+        Map<String, Object> m = new HashMap<>();
+        m.put("user_id", userid);
+        m.put("first", 1);
+        qw.allEq(m);
+        map.put("address", addressMapper.selectOne(qw));
+        return map;
+    }
+
+    @GetMapping("getAddressListByUserId")
+    public Map<String, Object> getAddressListByUserId(@RequestParam Integer userid, @RequestParam Integer currentPage, @RequestParam Integer pageSize) {
+        Map<String, Object> map = new HashMap<>();
+        QueryWrapper<Address> qw = new QueryWrapper<>();
+        qw.orderByDesc("first");
+        qw.eq("user_id", userid);
+        Page<Address> page = new Page<>(currentPage, pageSize);
+        map.put("page", addressMapper.selectPage(page, qw));
+        return map;
+    }
+
+    @GetMapping("insertAddress")
+    public Map<String, Object> insertAddress(Address address) {
+        Map<String, Object> map = new HashMap<>();
+        System.out.println(address);
+        if (addressMapper.insert(address) == 0) {
+            map.put("msg", "插入失败");
+        } else {
+            map.put("msg", "success");
+        }
+        return map;
+    }
+
+    @RequestMapping(value = "updateAddress", method = {RequestMethod.GET, RequestMethod.POST})
+    public Map<String, Object> updateAddress(Address address) {
+        Map<String, Object> map = new HashMap<>();
+        if (userService.updateFirst(address) == 1) {
+            map.put("msg", "success");
+        } else {
+            map.put("msg", "更新失败");
+        }
         return map;
     }
 
@@ -170,7 +223,7 @@ public class Usercontroller {
         } else {
             qw.eq("nickname", phone);
         }
-        qw.select("id", "nickname", "password", "avatar", "phone");
+        qw.select("id", "nickname", "password", "avatar", "phone", "score");
         User user = userMapper.selectOne(qw);
         if (user == null) {
             map.put("msg", "手机号未注册或者用户名未注册");
