@@ -265,7 +265,6 @@ public class UserController {
          else {
             map.put("msg", "密码错误");
         }
-         map.put("msg", "success");
         return map;
 
 
