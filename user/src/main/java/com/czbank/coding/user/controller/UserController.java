@@ -5,7 +5,6 @@ import api.Card;
 import api.User;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-
 import com.czbank.coding.user.mapper.AddressMapper;
 import com.czbank.coding.user.mapper.CardMapper;
 import com.czbank.coding.user.mapper.UserMapper;
@@ -84,6 +83,16 @@ public class UserController {
         }
         return map;
     }
+    /**
+     * 根据ID删除
+     */
+    @GetMapping("deleteAddress")
+    public Map<String,Object> userDeleteByID(Integer id) {
+        Map<String, Object> map = new HashMap<>();
+        addressMapper.deleteById(id);
+        map.put("mas","删除成功");
+        return map;
+    }
 
     @RequestMapping(value = "updateAddress", method = {RequestMethod.GET, RequestMethod.POST})
     public Map<String, Object> updateAddress(Address address) {
@@ -95,6 +104,7 @@ public class UserController {
         }
         return map;
     }
+
 
     @GetMapping("update")
     public Map<String, Object> userUpdate(@RequestParam String nickname, @RequestParam String address,
@@ -122,7 +132,7 @@ public class UserController {
     public Map<String, Object> userSelectByID(Integer id) {
         Map<String, Object> map = new HashMap<>();
         User user = userMapper.selectById(id);
-        map.put("user",user);
+        map.put("user", user);
         map.put("Sucess", user);
         return map;
     }
@@ -191,14 +201,7 @@ public class UserController {
 //        return "条件查询成功";
 //    }
 
-//    /**
-//     * 根据ID删除
-//     */
-//    @GetMapping("deleteByID")
-//    public Object userDeleteByID() {
-//        userMapper.deleteById(7);
-//        return "Sucessfully delete";
-//    }
+
 
 //    @GetMapping("/getGoodList")
 //    public Map<String, Object> getGoodList(@RequestParam Integer currentPage, @RequestParam Integer pageSize) {
@@ -241,37 +244,52 @@ public class UserController {
     }
 
 
-    @GetMapping("pay")
-    public Map<String,Object> pay(@RequestParam Integer userid,@RequestParam Integer goodid,@RequestParam String password) {
+    @GetMapping("pay1")
+    public Map<String, Object> pay(@RequestParam Integer userid, @RequestParam Integer goodid, @RequestParam Integer goodScore, @RequestParam Integer goodnumber, @RequestParam String password) {
         Map<String, Object> map = new HashMap<>();
-        Map<String, Object> map1 = new HashMap<>();
         QueryWrapper<User> qw = new QueryWrapper<>();
-        Integer goodScore;
         User user = userMapper.selectById(userid);
-        map1.put("id", user.getId());
-        map1.put("password", user.getPassword());
-        qw.allEq(map1);
+//        template.getForEntity("https://good/good/minusNumber?goodid={goodid}&goodnumber={goodnumber}",Integer.class,goodid,goodnumber).getBody();
+        qw.eq("id", user.getId());
         if (password.equals(user.getPassword())) {
-            goodScore = template.getForEntity("http://good/good/getGoodScore?id={goodid}", Integer.class, goodid).getBody();
-            user.setScore(user.getScore() - goodScore);
+            user.setScore(user.getScore() - goodnumber * goodScore);
+            System.out.println(goodnumber * goodScore);
             userMapper.updateById(user);
-            if (user.getScore()>= 0) {
+            if (user.getScore() >= 0) {
                 qw.select("id", "score");
                 map.put("score", userMapper.selectOne(qw));
             } else {
                 map.put("msg", "积分余额不足");
             }
-        }
-         else {
+        } else {
             map.put("msg", "密码错误");
         }
         return map;
-
-
     }
 
+    @GetMapping("pay2")
+    public Map<String, Object> pay1(@RequestParam Integer userid, @RequestParam Integer goodid, @RequestParam Integer goodScore, @RequestParam Integer goodnumber, @RequestParam String password) {
+        Map<String, Object> map = new HashMap<>();
+        QueryWrapper<User> qw = new QueryWrapper<>();
+        User user = userMapper.selectById(userid);
+        template.getForEntity("https://good/good/minusNumber?goodid={goodid}&goodnumber={goodnumber}", Integer.class, goodid, goodnumber).getBody();
+        map.clear();
+        qw.eq("id", user.getId());
+        if (password.equals(user.getPassword())) {
+            user.setScore(user.getScore() - goodnumber * goodScore);
+            System.out.println(goodnumber * goodScore);
+            userMapper.updateById(user);
+            if (user.getScore() >= 0) {
+                qw.select("id", "score");
+                map.put("score", userMapper.selectOne(qw));
+            } else {
+                map.put("msg", "积分余额不足");
+            }
+        } else {
+            map.put("msg", "密码错误");
+        }
+        return map;
+    }
 }
-
-
 
 

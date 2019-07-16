@@ -17,15 +17,15 @@ public class OrdersController {
     @Resource
     private OrdersMapper ordersMapper;
 
-    //增加，付款成功后添加订单信息
     @GetMapping("insertOrders")
     public Map<String, Object> ordersInsert(Orders orders) {
         Map<String, Object> map = new HashMap<>();
+        //增加，付款成功后添加订单信息
         orders.setCreateTime(LocalDateTime.now());
         if (ordersMapper.insert(orders) == 1) {
             map.put("msg", "success");
         } else {
-            map.put("msg", "success");
+            map.put("msg", "fail");
         }
         return map;
     }
@@ -39,7 +39,7 @@ public class OrdersController {
             map.put("msg", "更新失败");
         }
         return map;
-     }
+    }
 
 
     //查找订单，用户通过订单号查找

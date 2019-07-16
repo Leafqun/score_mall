@@ -23,6 +23,7 @@ public class GoodController {
     @Resource
     private RestTemplate restTemplate;
 
+
     @GetMapping("getList")
     public Object getList() {
         return goodMapper.selectList(null);
@@ -57,9 +58,9 @@ public class GoodController {
     }
 
     @GetMapping("getGood")
-    public Map<String,Object> getGood(Integer id) {
+    public Map<String, Object> getGood(Integer id) {
         Map<String, Object> map = new HashMap<>();
-        map.put("good",goodMapper.selectById(id));
+        map.put("good", goodMapper.selectById(id));
         return map;
     }
 
@@ -69,7 +70,7 @@ public class GoodController {
         QueryWrapper qw = new QueryWrapper();
         qw.orderByDesc("id");
         if (!StringUtils.isEmpty(name)) {
-            if (!StringUtils.isEmpty(qw.like("good_name",name))) {
+            if (!StringUtils.isEmpty(qw.like("good_name", name))) {
                 Page<Good> page = new Page<>(currentPage, pageSize);
                 map.put("page", goodMapper.selectPage(page, qw));
             } else {
@@ -80,21 +81,26 @@ public class GoodController {
         }
         return map;
     }
-    @GetMapping("getGoodScore")
-    public Integer getGoodScore(Integer id){
-        new Good();
-        Good good;
-        good = goodMapper.selectById(id);
-        return good.getScorePrice();
+
+    @GetMapping("minusNumber")
+    public Map<String, Object> getGoodScore(Integer goodid, Integer goodnumber) {
+        Map<String, Object> map = new HashMap<>();
+        Good good = goodMapper.selectById(goodid);
+        good.setStore(good.getStore() - goodnumber);
+        goodMapper.updateById(good);
+        map.put("msg","scusess");
+        return map;
     }
 
-    @GetMapping("goodMinus")
-    public Integer goodMinus(Integer id){
-        Good good = new Good();
-        good = goodMapper.selectById(id);
-        good.setStore(good.getStore()-1);
-        return good.getStore();
-    }
+
+//    @GetMapping("goodMinus")
+//    public Integer goodMinus(){
+//        restTemplate.getForEntity
+//        Good good = goodMapper.selectById(goodid);
+//        good.setStore(good.getStore()-goodnumber);
+//        goodMapper.update(good);
+//        return good.getStore();
+//    }
 }
 
 
