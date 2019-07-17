@@ -254,8 +254,8 @@ public class UserController {
         if (password.equals(user.getPassword())) {
             user.setScore(user.getScore() - goodnumber * goodScore);
             System.out.println(goodnumber * goodScore);
-            userMapper.updateById(user);
             if (user.getScore() >= 0) {
+                userMapper.updateById(user);
                 qw.select("id", "score");
                 map.put("score", userMapper.selectOne(qw));
             } else {
@@ -278,8 +278,8 @@ public class UserController {
         if (password.equals(user.getPassword())) {
             user.setScore(user.getScore() - goodnumber * goodScore);
             System.out.println(goodnumber * goodScore);
-            userMapper.updateById(user);
             if (user.getScore() >= 0) {
+                userMapper.updateById(user);
                 qw.select("id", "score");
                 map.put("score", userMapper.selectOne(qw));
             } else {
