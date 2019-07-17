@@ -65,14 +65,6 @@ public class OrdersController {
         return map;
     }
 
-    //    @GetMapping("/getGoodList")
-//    public Map<String, Object> getGoodList(@RequestParam Integer currentPage, @RequestParam Integer pageSize) {
-//        Map<String, Object> map = new HashMap<>();
-//        QueryWrapper<Good> qw = new QueryWrapper<>();
-//        qw.orderByDesc("id");
-//        Page<Good> page = new Page<>(currentPage, pageSize);
-//        map.put("page", goodMapper.selectPage(page, qw));
-//        return map;
 
     //删除订单，用户需要删除时
     @GetMapping("deleteOrdersById")
